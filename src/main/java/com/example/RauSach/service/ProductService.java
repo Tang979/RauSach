@@ -1,9 +1,16 @@
 package com.example.RauSach.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.RauSach.model.Product;
 import com.example.RauSach.repository.ProductRepository;
@@ -48,5 +55,24 @@ public class ProductService {
             throw new IllegalStateException("Product with ID " + id + " does not exist.");
         }
         productRepository.deleteById(id);
+    }
+    public void updateImage(Product newProduct, MultipartFile imageProduct)
+    {
+        if (!imageProduct.isEmpty()) {
+            try
+            {
+                Path dirImages = Paths.get("static/images");
+                if (!Files.exists(dirImages)) {
+                    Files.createDirectories(dirImages);
+                }
+                String newFileName = UUID.randomUUID()+"_"+imageProduct.getOriginalFilename();
+                Path pathFileUpload = dirImages.resolve(newFileName);
+                Files.copy(imageProduct.getInputStream(), pathFileUpload, StandardCopyOption.REPLACE_EXISTING);
+                newProduct.setImageURL(newFileName);
+            }
+            catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            }
+        }
     }
 }

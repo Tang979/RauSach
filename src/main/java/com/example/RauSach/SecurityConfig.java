@@ -43,10 +43,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error",
-                                "/product")
+                        .requestMatchers("/css/**", "/images/**", "/js/**", "/", "/oauth/**", "/register", "/error",
+                                "/products/**")
                         .permitAll() // Cho phép truy cập không cần xác thực.
-                        .requestMatchers("/course/edit/**", "/course/add", "/course/delete")
+                        .requestMatchers("/course/edit/**", "/products/add", "/course/delete")
                         .hasAnyAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập.
                         .requestMatchers("/api/**")
                         .permitAll() // API mở cho mọi người dùng.
@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login") // Trang đăng nhập.
                         .loginProcessingUrl("/login") // URL xử lý đăng nhập.
-                        .defaultSuccessUrl("/courses") // Trang sau đăng nhập thành công.
+                        .defaultSuccessUrl("/") // Trang sau đăng nhập thành công.
                         .failureUrl("/login?error") // Trang đăng nhập thất bại.
                         .permitAll())
                 .rememberMe(rememberMe -> rememberMe

@@ -24,7 +24,8 @@ public class Product {
     @NotBlank(message = "Tên không được để trống")
     private String name;
     @Min(1000)
-    private double price;
+    private long price;
+    private String imageURL;
     private String description;
     @ManyToOne
     @JoinColumn(name = "category_id")
