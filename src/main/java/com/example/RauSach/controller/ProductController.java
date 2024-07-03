@@ -3,6 +3,7 @@ package com.example.RauSach.controller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ public class ProductController {
         model.addAttribute("products", productService.getAllProduct());
         return "/product/product-list";
     }
-
     @GetMapping("/add")
     public String showAddProducString(Model model) {
         model.addAttribute("product", new Product());
@@ -63,11 +63,5 @@ public class ProductController {
     @GetMapping("/{id}")
     public Optional<Product> getProduct(@PathVariable String id) {
         return productService.getProductById(id);
-    }
-
-    @GetMapping("/details/{id}")
-    public ResponseEntity<Product> getProductDetails(@PathVariable String id) {
-        Optional<Product> product = productService.getProductById(id);
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
