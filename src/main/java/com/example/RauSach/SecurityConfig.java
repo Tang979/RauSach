@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.RauSach.service.UserService;
@@ -40,7 +41,7 @@ public class SecurityConfig {
         }
 
         @Bean
-        public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
+        public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http, OAuth2UserService oAuth2UserService) throws Exception {
                 return http
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register",
@@ -73,11 +74,15 @@ public class SecurityConfig {
                                                 .userDetailsService(userDetailsService()))
                                 .oauth2Login(oauth2Login -> oauth2Login
                                                 .loginPage("/login") // Trang đăng nhập cho OAuth2.
+                                                .userInfoEndpoint(userInfo -> userInfo
+                                                .userService(oAuth2UserService)
+                                                    )
                                                 .defaultSuccessUrl("/") // Trang sau khi đăng nhập thành công.
                                                 .failureUrl("/login?error") // Trang đăng nhập thất bại.
                                 )
                                 .oauth2Login(oauth2Login ->
                                                 oauth2Login
+
                                                 .loginPage("/oauth2/authorization/facebook")
                                                         .defaultSuccessUrl("/")
                                  )
