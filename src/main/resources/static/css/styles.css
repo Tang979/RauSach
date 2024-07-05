@@ -1,7 +1,9 @@
 
-
+body{
+    color: #D6D6D6;
+}
 .navbar-expand-lg{
-    background-color: green;
+    background-color: #0B783E;
 }
 
 .navbar-brand img {
@@ -14,7 +16,6 @@
     object-fit: cover; 
     height: 500px; 
 }
-
 @media (max-width: 768px) {
     .slider-image {
         height: 300px;

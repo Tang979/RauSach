@@ -8,44 +8,39 @@
     <title>All Green</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
-    <form action="/change-language" method="get">
-        <select name="lang" onchange="this.form.submit()">
-            <option value="en" th:selected="${#locale.language == 'en'}">English</option>
-            <option value="vi" th:selected="${#locale.language == 'vi'}">vietnameme</option>
-        </select>
-    </form>
 
 </head>
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-color">
-        <a class="navbar-brand text-white" href="#">
-            All Green
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand text-white" href="/products">
+            RAU SACH
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
                 <li class="nav-item">
-                    <a class="nav-link" href="/Web/Home1.html">Trang chủ</a>
+                    <a class="nav-link" href="/products">Trang chủ</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#">Liên hệ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Giới thiệu</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="#">Sản phẩm</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                    <a th:href="@{/admin/dash-board}" class="nav-link text-white">Dash board</a>
                 </li>
             </ul>
             <span class="navbar-text"></span>
             <a class="nav-link " href="http://127.0.0.1:5500/Web/order.html"><i
                     class="fa-solid fa-basket-shopping"></i></a>
-
+                    
             <div sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,13 +63,13 @@
         </div>
     </nav>
     <!--Section-->
-    <div class="container mt-5">
+    <div class="container">
         <section layout:fragment="content">
             <!-- Nội dung cụ thể của từng trang sẽ được đặt tại đây -->
         </section>
     </div>
     <!-- Footer -->
-    <div class="container mt-5">
+    <!-- <div class="container mt-5">
         <div class="row contact-section">
             <div class="col-md-6">
                 <div class="contact-info">
@@ -112,7 +107,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
     <script src="https://kit.fontawesome.com/d771e5aa2b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

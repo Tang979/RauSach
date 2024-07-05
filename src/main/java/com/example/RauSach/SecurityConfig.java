@@ -44,11 +44,11 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http, OAuth2UserService oAuth2UserService) throws Exception {
                 return http
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register",
+                                                .requestMatchers("/css/**", "/js/**", "images/**", "/", "/oauth/**", "/register",
                                                                 "/error",
-                                                                "/product")
+                                                                "/products")
                                                 .permitAll() // Cho phép truy cập không cần xác thực.
-                                                .requestMatchers("/course/edit/**", "/course/add", "/course/delete")
+                                                .requestMatchers("/products/edit/**", "/products/add", "/products/delete")
                                                 .hasAnyAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập.
                                                 .requestMatchers("/api/**")
                                                 .permitAll() // API mở cho mọi người dùng.
@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 )
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
-                                                .logoutSuccessUrl("/login") // Trang chuyển hướng sau khi đăng xuất.
+                                                .logoutSuccessUrl("/products") // Trang chuyển hướng sau khi đăng xuất.
                                                 .deleteCookies("JSESSIONID") // Xóa cookie.
                                                 .invalidateHttpSession(true) // Hủy phiên làm việc.
                                                 .clearAuthentication(true) // Xóa xác thực.
@@ -64,7 +64,7 @@ public class SecurityConfig {
                                 .formLogin(formLogin -> formLogin
                                                 .loginPage("/login") // Trang đăng nhập.
                                                 .loginProcessingUrl("/login") // URL xử lý đăng nhập.
-                                                .defaultSuccessUrl("/") // Trang sau đăng nhập thành công.
+                                                .defaultSuccessUrl("/products") // Trang sau đăng nhập thành công.
                                                 .failureUrl("/login?error") // Trang đăng nhập thất bại.
                                                 .permitAll())
                                 .rememberMe(rememberMe -> rememberMe
@@ -77,14 +77,14 @@ public class SecurityConfig {
                                                 .userInfoEndpoint(userInfo -> userInfo
                                                 .userService(oAuth2UserService)
                                                     )
-                                                .defaultSuccessUrl("/") // Trang sau khi đăng nhập thành công.
+                                                .defaultSuccessUrl("/products") // Trang sau khi đăng nhập thành công.
                                                 .failureUrl("/login?error") // Trang đăng nhập thất bại.
                                 )
                                 .oauth2Login(oauth2Login ->
                                                 oauth2Login
 
                                                 .loginPage("/oauth2/authorization/facebook")
-                                                        .defaultSuccessUrl("/")
+                                                        .defaultSuccessUrl("/products")
                                  )
                                 .exceptionHandling(exceptionHandling -> exceptionHandling
                                                 .accessDeniedPage("/403") // Trang báo lỗi khi truy cập không được phép.

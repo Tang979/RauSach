@@ -13,22 +13,14 @@
 <body>
     <section layout:fragment="content">
         <div class="container body-content">
-            <h1 class="title">DANH SÁCH SẢN PHẨM</h1>
-            <div class="categories">
-                <a href="#" class="active">TẤT CẢ</a>
-                <a href="#">NƯỚC GIẢI KHÁT</a>
-                <a href="#">RAU</a>
-                <a href="#">THỊT</a>
-                <a href="#">ĐỒ ĂN NHANH</a>
-            </div>
             <div class="row" id="products">
                 <div th:each="product : ${products}" class="col-md-6" id="product">
                     <img th:src="@{/images/} + ${product.imageURL}">
-                    <p id="ProductName" th:text="${product.name}">Tên sản phẩm</p>
-                    <p th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')} + '₫'">Giá</p>
+                    <h6 id="ProductName" th:text="${product.name}">Tên sản phẩm</h6>
+                    <p th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + '₫'">Giá</p>
                     <div class="buttons">
                         <button class="btn view-product-btn" th:data-id="${product.id}">
-                            XEM NGAY
+                            Mua
                         </button>
                     </div>
                 </div>
@@ -41,7 +33,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="productModalLabel">Chi tiết sản phẩm</h5>
+                            <h5 id="productName">Tên sản phẩm</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -52,13 +44,13 @@
                                     <img id="imgProduct" class="img-fluid product-image">
                                 </div>
                                 <div class="col-md-6">
-                                    <h5 id="productName">Tên sản phẩm</h5>
+                                    
                                     <div class="mt-3">
                                         <button class="btn btn-outline-secondary btn-sm">-</button>
                                         <input type="text" value="1" class="text-center" style="width: 50px;">
                                         <button class="btn btn-outline-secondary btn-sm">+</button>
                                     </div>
-                                    <h3 id="productPrice" class="text-danger mt-3">30.000đ <span class="line-through text-secondary">40.000đ</span></h3>
+                                    <h3 id="productPrice" class="text-danger mt-3"> <span class="line-through text-secondary">40.000đ</span></h3>
                                     <p id="productDescription">Mô tả sản phẩm</p>
                                     <button class="btn btn-success btn-lg mt-2">MUA NGAY</button>
                                 </div>
