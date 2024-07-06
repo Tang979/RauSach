@@ -21,29 +21,37 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
                 <li class="nav-item">
                     <a class="nav-link" href="/products">Trang chủ</a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="#">Liên hệ</a>
-                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="#">Sản phẩm</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
-                    <a th:href="@{/admin/dash-board}" class="nav-link text-white">Dash board</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="dashboardDropdown"
+                        sec:authorize="hasAnyAuthority('ADMIN')" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Dash board
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                        <a class="dropdown-item" href="/admin/products/list">Quản lý Sản phẩm</a>
+                        <a class="dropdown-item" href="#">Quản lý Loại sản phẩm</a>
+                        <a class="dropdown-item" href="#">Quản lý Nhân viên</a>
+                        <a class="dropdown-item" href="#">Doanh thu</a>
+                    </div>
                 </li>
+                <span class="navbar-text"></span>
+                <a class="nav-link " href="http://127.0.0.1:5500/Web/order.html"><i
+                        class="fa-solid fa-basket-shopping"></i></a>
             </ul>
-            <span class="navbar-text"></span>
-            <a class="nav-link " href="http://127.0.0.1:5500/Web/order.html"><i
-                    class="fa-solid fa-basket-shopping"></i></a>
-                    
+
             <div sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Xin chào, <span sec:authentication="name"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
@@ -56,63 +64,21 @@
 
             <!-- Nút Login khi chưa đăng nhập -->
             <div sec:authorize="!isAuthenticated()" style="display: inline;">
-                <li class="nav-item" >
+                <li class="nav-item">
                     <a class="btn btn-outline-light" href="/login">Login</a>
                 </li>
             </div>
         </div>
     </nav>
     <!--Section-->
-    <div class="container">
+    <div class="container mt-5">
         <section layout:fragment="content">
             <!-- Nội dung cụ thể của từng trang sẽ được đặt tại đây -->
         </section>
     </div>
-    <!-- Footer -->
-    <!-- <div class="container mt-5">
-        <div class="row contact-section">
-            <div class="col-md-6">
-                <div class="contact-info">
-                    <img src="https://via.placeholder.com/50" alt="Logo">
-                    <div>
-                        <h4>All Green</h4>
-                        <p>Think Act Protect</p>
-                    </div>
-                </div>
-                <div class="contact-info">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <p>Tầng 6 toà nhà Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</p>
-                </div>
-                <div class="contact-info">
-                    <i class="fas fa-phone-alt"></i>
-                    <p>1900 6750</p>
-                </div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i>
-                    <p>support@sapo.vn</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="name" placeholder="Họ tên">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" id="message" rows="4" placeholder="Nội dung"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-submit">Gửi</button>
-                </form>
-            </div>
-        </div>
-    </div> -->
     <script src="https://kit.fontawesome.com/d771e5aa2b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 </body>
 
 </html>

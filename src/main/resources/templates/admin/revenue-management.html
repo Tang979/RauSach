@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" src="/css/styles.css">
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div id="revenue-management" class="container-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Doanh thu</h1>
+                <!-- Search form -->
+                <form class="form-inline search-form">
+                    <input id="searchInputRevenue" class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm doanh thu" aria-label="Search">
+                    <button id="searchButtonRevenue" class="btn btn-outline-primary my-2 my-sm-0" type="button">Tìm kiếm</button>
+                </form>
+            </div>
+
+            <table id="revenueTable" class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tháng</th>
+                        <th scope="col">Doanh thu</th>
+                        <th scope="col">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dữ liệu doanh thu sẽ được load từ backend -->
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Tháng 1</td>
+                        <td>1,000,000 VNĐ</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Sửa</button>
+                            <button class="btn btn-sm btn-danger">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Tháng 2</td>
+                        <td>1,200,000 VNĐ</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Sửa</button>
+                            <button class="btn btn-sm btn-danger">Xóa</button>
+                        </td>
+                    </tr>
+                    <!-- Thêm các dòng khác tương tự cho các doanh thu khác -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Revenue management section -->
+        <div id="revenue-management" class="container-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Doanh thu</h1>
+            </div>
+            <canvas id="revenueChart" width="400" height="200"></canvas>
+        </div>
+        <script>
+            $(document).ready(function () {
+                var ctx = document.getElementById('revenueChart').getContext('2d');
+                var revenueChart = new Chart(ctx, {
+                    type: 'line', // Loại biểu đồ: line, bar, etc.
+                    data: {
+                        labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'], // Nhãn trục X
+                        datasets: [{
+                            label: 'Doanh thu (VNĐ)',
+                            data: [1000000, 1200000, 900000, 1500000, 1700000, 1300000, 1100000, 1400000, 1600000, 1800000, 2000000, 2200000], // Dữ liệu doanh thu
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Biểu đồ doanh thu theo tháng'
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Tháng'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Doanh thu (VNĐ)'
+                                }
+                            }]
+                        }
+                    }
+                });
+            });
+        </script>
+    </section>
+</body>
+
+</html>
