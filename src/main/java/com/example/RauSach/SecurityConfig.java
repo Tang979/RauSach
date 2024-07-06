@@ -44,9 +44,9 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http, OAuth2UserService oAuth2UserService) throws Exception {
                 return http
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register",
+                                                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/images/**",
                                                                 "/error",
-                                                                "/product")
+                                                                "/products")
                                                 .permitAll() // Cho phép truy cập không cần xác thực.
                                                 .requestMatchers("/course/edit/**", "/course/add", "/course/delete")
                                                 .hasAnyAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập.

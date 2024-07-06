@@ -21,7 +21,7 @@ public class Order {
     private LocalDate oderDate;
     private Long totalAmount;
     public void setCustomerName(String customerName) {
-        // TODO Auto-generated method stub
+        
         throw new UnsupportedOperationException("Unimplemented method 'setCustomerName'");
     }
 }
