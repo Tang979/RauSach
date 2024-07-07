@@ -31,4 +31,9 @@ public class AdminController {
         model.addAttribute("products", productService.getAllProduct());
         return "/admin/product-manager";
     }
+    @GetMapping("/employee/list")
+    public String showEmployee(Model model) {
+        model.addAttribute("products", productService.getAllProduct());
+        return "/admin/employee-management";
+    }
 }

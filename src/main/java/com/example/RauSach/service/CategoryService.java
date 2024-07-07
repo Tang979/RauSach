@@ -73,4 +73,7 @@ public class CategoryService {
         }
         categoryRepository.deleteById(id);
     }
+    public List<Category> searchCategories(String keyword) {
+        return categoryRepository.findByNameContainingIgnoreCase(keyword);
+    }
 }

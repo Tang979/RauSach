@@ -41,14 +41,17 @@ public class SecurityConfig {
         }
 
         @Bean
-        public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http, OAuth2UserService oAuth2UserService) throws Exception {
+        public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http, OAuth2UserService oAuth2UserService)
+                        throws Exception {
                 return http
+                                .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/css/**", "/js/**", "images/**", "/", "/oauth/**", "/register",
+                                                .requestMatchers("/css/**", "/js/**", "images/**", "/", "/oauth/**",
+                                                                "/register",
                                                                 "/error",
                                                                 "/products")
                                                 .permitAll() // Cho phép truy cập không cần xác thực.
-                                                .requestMatchers("/products/edit/**", "/products/add", "/products/delete")
+                                                .requestMatchers("/products/add", "/admin/products")
                                                 .hasAnyAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập.
                                                 .requestMatchers("/api/**")
                                                 .permitAll() // API mở cho mọi người dùng.
@@ -75,17 +78,14 @@ public class SecurityConfig {
                                 .oauth2Login(oauth2Login -> oauth2Login
                                                 .loginPage("/login") // Trang đăng nhập cho OAuth2.
                                                 .userInfoEndpoint(userInfo -> userInfo
-                                                .userService(oAuth2UserService)
-                                                    )
+                                                                .userService(oAuth2UserService))
                                                 .defaultSuccessUrl("/products") // Trang sau khi đăng nhập thành công.
                                                 .failureUrl("/login?error") // Trang đăng nhập thất bại.
                                 )
-                                .oauth2Login(oauth2Login ->
-                                                oauth2Login
+                                .oauth2Login(oauth2Login -> oauth2Login
 
                                                 .loginPage("/oauth2/authorization/facebook")
-                                                        .defaultSuccessUrl("/products")
-                                 )
+                                                .defaultSuccessUrl("/products"))
                                 .exceptionHandling(exceptionHandling -> exceptionHandling
                                                 .accessDeniedPage("/403") // Trang báo lỗi khi truy cập không được phép.
                                 )

@@ -33,15 +33,15 @@ public class CategoryController {
             return "/categories/add-category";
         }
         categoryService.addCategory(category);
-        return "redirect:/categories";
+        return "redirect:/admin/categories/list";
     }
 
     // Hiển thị danh sách danh mục
-    @GetMapping("/categories")
+    @GetMapping("/admin/categories/list")
     public String listCategories(Model model) {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
-        return "/categories/categories-list";
+        return "/admin/category-manager";
     }
 
     @GetMapping("/categories/edit/{id}")

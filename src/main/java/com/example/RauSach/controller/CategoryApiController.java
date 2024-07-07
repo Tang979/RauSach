@@ -50,4 +50,8 @@ public class CategoryApiController {
         categoryService.deleteCategoryById(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/search")
+    public List<Category> searchCategories(@RequestParam String keyword) {
+        return categoryService.searchCategories(keyword);
+    }
 }

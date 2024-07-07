@@ -16,42 +16,145 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h1>Loại sản phẩm</h1>
                 <form class="form-inline search-form">
-                    <input id="searchInputCategory" class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm loại sản phẩm" aria-label="Search">
-                    <button id="searchButtonCategory" class="btn btn-outline-primary my-2 my-sm-0" type="button">Tìm kiếm</button>
+                    <input id="searchInputCategory" class="form-control mr-sm-2" type="search"
+                        placeholder="Tìm kiếm loại sản phẩm" aria-label="Search">
+                    <button id="searchButtonCategory" class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="searchCategories()">Tìm
+                        kiếm</button>
                 </form>
-                <a href="#" class="btn btn-outline-success"> Thêm</a>
+                <a href="/categories/add" class="btn btn-outline-success"> Thêm</a>
             </div>
             <table id="categoryTable" class="table">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Tên danh mục</th>
-                        <th scope="col">Mô tả</th>
                         <th scope="col">Hành động</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Danh mục A</td>
-                        <td>Mô tả danh mục A</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary">Sửa</button>
-                            <button class="btn btn-sm btn-danger">Xóa</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Danh mục B</td>
-                        <td>Mô tả danh mục B</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary">Sửa</button>
-                            <button class="btn btn-sm btn-danger">Xóa</button>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="categoryList"></tbody>
             </table>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCategoryModalLabel">Chỉnh sửa danh mục sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editCategoryForm">
+                            <input type="hidden" id="categoryId">
+                            <div class="mb-3">
+                                <label for="editCategoryName" class="form-label">Tên danh mục:</label>
+                                <input type="text" class="form-control" id="editCategoryName" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button onclick="saveCategoryChanges()" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                loadCategories();
+            });
+            function loadCategories() {
+                $.ajax({
+                    url: '/api/categories',
+                    type: 'GET',
+                    success: function (categories) {
+                        let categoryList = '';
+                        let stt = 1;
+                        $.each(categories, function (index, category) {
+                            categoryList += `<tr>
+                                <td>${stt}</td>
+                                <td>${category.name}</td>
+                                <td>
+                                    <button onclick="editCategory('${category.id}')" class="btn btn-warning">Edit</button>
+                                    <button onclick="deleteCategory('${category.id}')" class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>`;
+                            stt++
+                        });
+                        $('#categoryList').html(categoryList);
+                    }
+                });
+            }
+            function editCategory(id) {
+                $.ajax({
+                    url: `/api/categories/${id}`,
+                    type: 'GET',
+                    success: function (category) {
+                        $('#categoryId').val(category.id);
+                        $('#editCategoryName').val(category.name);
+                        $('#editCategoryModal').modal('show');
+                    }
+                });
+            }
+
+            function saveCategoryChanges() {
+                const categoryData = {
+                    id: $('#categoryId').val(),
+                    name: $('#editCategoryName').val()
+                };
+
+                $.ajax({
+                    url: `/api/categories/${categoryData.id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(categoryData),
+                    success: function () {
+                        $('#editCategoryModal').modal('hide');
+                        loadCategories();
+                    }
+                });
+            }
+
+            function deleteCategory(id) {
+                if (confirm('Are you sure you want to delete this category?')) {
+                    $.ajax({
+                        url: `/api/categories/${id}`,
+                        type: 'DELETE',
+                        success: function () {
+                            loadCategories();
+                        }
+                    });
+                }
+            }
+
+            function searchCategories() {
+                const searchValue = $('#searchInputCategory').val().trim();
+                if (searchValue !== '') {
+                    $.ajax({
+                        url: `/api/categories/search?keyword=${searchValue}`,
+                        type: 'GET',
+                        success: function (categories) {
+                            let categoryList = '';
+                            let stt = 1;
+                            $.each(categories, function (index, category) {
+                                categoryList += `<tr>
+                                    <td>${stt}</td>
+                                    <td>${category.name}</td>
+                                    <td>
+                                        <button onclick="editProduct(${category.id})" class="btn btn-warning">Edit</button>
+                                        <button onclick="deleteProduct(${category.id})" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>`;
+                                stt++
+                            });
+                            $('#categoryList').html(categoryList);
+                        }
+                    });
+                } else {
+                    loadCategories(); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
+                }
+            }
+        </script>
     </section>
 </body>
 

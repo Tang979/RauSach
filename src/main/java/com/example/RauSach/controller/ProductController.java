@@ -57,7 +57,7 @@ public class ProductController {
         }
         productService.updateImage(newProduct, imageProduct);
         productService.addProduct(newProduct);
-        return "redirect:/products";
+        return "redirect:/admin/products/list";
     }
 
     @GetMapping("/{id}")
