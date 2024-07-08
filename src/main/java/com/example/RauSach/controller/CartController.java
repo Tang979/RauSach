@@ -18,16 +18,12 @@ public class CartController {
 
     @GetMapping
     public String showCart(Model model) {
-        List<CartItem> cartItems = cartService.getCartItems();
-        double totalPrice = cartItems.stream().mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity()).sum();
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cartItems", cartService.getCartItems());
         return "/cart/cart";
     }
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam String productId, @RequestParam int
-            quantity) {
+    public String addToCart(@RequestParam String productId, @RequestParam int quantity) {
         cartService.addToCart(productId, quantity);
         return "redirect:/cart";
     }

@@ -15,7 +15,7 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-color" style="color: white;">
-        <a class="navbar-brand text-white" href="#">
+        <a class="navbar-brand text-white" href="/products">
             <img    src="/images/logo9.png" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -25,16 +25,23 @@
         <div class="collapse navbar-collapse" id="navbarNav" >
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
                 <li class="nav-item" >
-                    <a class="nav-link" href="/Web/Home1.html" style="color: white;">Trang chủ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="color: white;">Liên hệ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="color: white;">Giới thiệu</a>
+                    <a class="nav-link" href="/products" style="color: white;">Trang chủ</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="color: white;">Sản phẩm</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" id="dashboardDropdown"
+                        sec:authorize="hasAnyAuthority('ADMIN')" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Dash board
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                        <a class="dropdown-item" href="/admin/products/list">Quản lý Sản phẩm</a>
+                        <a class="dropdown-item" href="/admin/categories/list">Quản lý Loại sản phẩm</a>
+                        <a class="dropdown-item" href="/admin/employee/list">Quản lý Nhân viên</a>
+                        <a class="dropdown-item" href="/admin/products/list">Doanh thu</a>
+                    </div>
                 </li>
             </ul>
             <span class="navbar-text"></span>
@@ -76,7 +83,7 @@
         <div class="row contact-section">
             <div class="col-md-6">
                 <div class="contact-info">
-                    <img src="https://via.placeholder.com/50" alt="Logo">
+                    <img src="/images/logo9.png" style="width: 150px;" alt="Logo">
                     <div>
                         <h4>All Green</h4>
                         <p>Think Act Protect</p>
