@@ -20,11 +20,11 @@ import lombok.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private Long id;
     @NotBlank(message = "Tên không được để trống")
     private String name;
     @Min(1000)
-    private long price;
+    private double price;
     private String imageURL;
     private String description;
     @ManyToOne
