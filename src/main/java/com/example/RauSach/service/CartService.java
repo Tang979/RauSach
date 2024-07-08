@@ -18,7 +18,7 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
 
-    public void addToCart(Long productId, int quantity) {
+    public void addToCart(String productId, int quantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
         cartItems.add(new CartItem(product, quantity));
@@ -28,7 +28,7 @@ public class CartService {
         return cartItems;
     }
 
-    public void removeFromCart(Long productId) {
+    public void removeFromCart(String productId) {
         cartItems.removeIf(item -> item.getProduct().getId().equals(productId));
     }
 

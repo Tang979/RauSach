@@ -1,3 +1,5 @@
+package com.example.RauSach.model;
+
 public class CartItem {
     private Product product;
     private int quantity;
