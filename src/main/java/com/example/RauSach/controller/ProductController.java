@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,12 +34,11 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
-
-    @GetMapping()
+/*    @GetMapping()
     public String showProduct(Model model) {
         model.addAttribute("products", productService.getAllProduct());
         return "/product/product-list";
-    }
+    }*/
     @GetMapping("/add")
     public String showAddProducString(Model model) {
         model.addAttribute("product", new Product());
@@ -64,4 +64,16 @@ public class ProductController {
     public Optional<Product> getProduct(@PathVariable String id) {
         return productService.getProductById(id);
     }
+
+    @GetMapping()
+    public String index(Model model,
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "5") int size) {
+        Page<Product> products = productService.GetAll(page, size);
+        model.addAttribute("products", products.getContent());
+        model.addAttribute("listproduct", products);
+        model.addAttribute("totalPages", products.getTotalPages());
+        return "/product/product-list";
+    }
 }
+

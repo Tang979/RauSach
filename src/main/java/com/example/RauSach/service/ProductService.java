@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,5 +76,10 @@ public class ProductService {
                 e.printStackTrace(); // Handle the exception appropriately
             }
         }
+    }
+
+    public Page<Product> GetAll(int pageNo, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        return productRepository.findAll(pageRequest);
     }
 }

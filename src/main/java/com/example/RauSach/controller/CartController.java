@@ -19,7 +19,7 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam Long productId, @RequestParam int
+    public String addToCart(@RequestParam String productId, @RequestParam int
             quantity) {
         cartService.addToCart(productId, quantity);
         return "redirect:/cart";

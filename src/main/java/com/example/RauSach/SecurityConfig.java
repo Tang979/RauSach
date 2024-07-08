@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/css/**", "/js/**", "images/**", "/", "/oauth/**", "/register",
                                                                 "/error",
-                                                                "/products")
+                                                                "/products", "/forgot")
                                                 .permitAll() // Cho phép truy cập không cần xác thực.
                                                 .requestMatchers("/products/edit/**", "/products/add", "/products/delete")
                                                 .hasAnyAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập.

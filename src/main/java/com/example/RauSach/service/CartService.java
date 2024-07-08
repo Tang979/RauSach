@@ -18,8 +18,8 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
 
-    public void addToCart(Long productId, int quantity) {
-        Product product = productRepository.findAllById(productId)
+    public void addToCart(String productId, int quantity) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
         cartItems.add(new CartItem(product, quantity));
     }
