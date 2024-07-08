@@ -8,50 +8,42 @@
     <title>All Green</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    
 
 </head>
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand text-white" href="/products">
-            RAU SACH
+    <nav class="navbar navbar-expand-lg navbar-light bg-color" style="color: white;">
+        <a class="navbar-brand text-white" href="#">
+            <img    src="/images/logo9.png" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav" >
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">Trang chủ</a>
+                <li class="nav-item" >
+                    <a class="nav-link" href="/Web/Home1.html" style="color: white;">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Sản phẩm</a>
+                    <a class="nav-link" href="#" style="color: white;">Liên hệ</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="dashboardDropdown"
-                        sec:authorize="hasAnyAuthority('ADMIN')" role="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Dash board
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dashboardDropdown">
-                        <a class="dropdown-item" href="/admin/products/list">Quản lý Sản phẩm</a>
-                        <a class="dropdown-item" href="/admin/categories/list">Quản lý Loại sản phẩm</a>
-                        <a class="dropdown-item" href="/admin/employee/list">Quản lý Nhân viên</a>
-                        <a class="dropdown-item" href="/admin/products/list">Doanh thu</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: white;">Giới thiệu</a>
                 </li>
-                <span class="navbar-text"></span>
-                <a class="nav-link " href="http://127.0.0.1:5500/Web/order.html"><i
-                        class="fa-solid fa-basket-shopping"></i></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: white;">Sản phẩm</a>
+                </li>
             </ul>
+            <span class="navbar-text"></span>
+            <a class="nav-link " href="/cart" style="margin-left: 20px; margin-right: 25px;"><i
+                    class="fa-solid fa-basket-shopping"></i></a>
 
             <div sec:authorize="isAuthenticated()">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown"  style="display: inline;">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Xin chào, <span sec:authentication="name"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
@@ -64,9 +56,12 @@
 
             <!-- Nút Login khi chưa đăng nhập -->
             <div sec:authorize="!isAuthenticated()" style="display: inline;">
-                <li class="nav-item">
-                    <a class="btn btn-outline-light" href="/login">Login</a>
-                </li>
+                <a href="/login">
+                    <button class="Btn">
+                        <div class="sign"><svg viewBox="0 0 512 512"><path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z"></path></svg></div>
+                        <div class="text">Login</div>
+                    </button>
+                </a>
             </div>
         </div>
     </nav>
@@ -76,9 +71,51 @@
             <!-- Nội dung cụ thể của từng trang sẽ được đặt tại đây -->
         </section>
     </div>
+    <!-- Footer -->
+    <div class="container mt-5">
+        <div class="row contact-section">
+            <div class="col-md-6">
+                <div class="contact-info">
+                    <img src="https://via.placeholder.com/50" alt="Logo">
+                    <div>
+                        <h4>All Green</h4>
+                        <p>Think Act Protect</p>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Tầng 6 toà nhà Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-phone-alt"></i>
+                    <p>1900 6750</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <p>support@sapo.vn</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name" placeholder="Họ tên">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="message" rows="4" placeholder="Nội dung"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-submit">Gửi</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="https://kit.fontawesome.com/d771e5aa2b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>

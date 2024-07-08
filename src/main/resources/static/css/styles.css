@@ -90,6 +90,8 @@ body {
 
 body {
     font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
 .container {
@@ -182,11 +184,11 @@ body {
     overflow: hidden;
     transition-duration: .3s;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
-    background-color: rgb(163, 142, 255);
-}
-
-/* plus sign */
-.sign {
+    background-color: rgb(50, 181, 115);
+  }
+  
+  /* plus sign */
+  .sign {
     width: 100%;
     transition-duration: .3s;
     display: flex;

@@ -46,8 +46,7 @@ public class SecurityConfig {
                 return http
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/css/**", "/js/**", "images/**", "/", "/oauth/**",
-                                                                "/register",
+                                                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/images/**",
                                                                 "/error",
                                                                 "/products")
                                                 .permitAll() // Cho phép truy cập không cần xác thực.

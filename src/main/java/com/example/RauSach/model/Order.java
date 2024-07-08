@@ -14,10 +14,14 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "oder")
-public class Oder {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private LocalDate oderDate;
     private Long totalAmount;
+    public void setCustomerName(String customerName) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'setCustomerName'");
+    }
 }

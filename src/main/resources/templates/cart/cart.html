@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="${title} ?: 'Your Cart'">Your Cart</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <section layout:fragment="content" >
+        <h1>Your Cart</h1>
+        <div class="container">
+            <h2 class="text-primary"></h2>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="product-summary">
+                        <h2 class="text-center">Thông Tin Đơn Hàng</h2>
+                        <div th:if="${cartItems.isEmpty()}" class="alert alert-info">Your cart is empty.</div>
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${cartItems}">
+                                    <td th:text="${item.product.image}"></td>
+                                    <td th:text="${item.product.name}"></td>
+                                    <td th:text="${item.quantity}"></td>
+                                    <td th:text="${item.product.price}"></td>
+                                    <td th:text="${item.total}"></td>
+                                    <td>
+                                        <a th:href="@{/cart/remove/{productId}(productId=${item.product.id})}" class="btn btn-danger btn-sm">Remove</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>    
+                        <hr>
+                        <div class="form-group">
+                            <label for="discount">Nhập mã giảm giá</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="discount" placeholder="Nhập mã giảm giá">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">Áp dụng</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Tạm tính</span>
+                            <strong class="text-primary" th:text="${totalPrice} + '₫'"></strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Phí vận chuyển</span>
+                            <span>25.000đ</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Tổng cộng</strong>
+                            <strong class="text-primary" th:text="${totalPrice} + '₫'"></strong>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div>
+                        <h5>Thông tin nhận hàng</h5>
+                        <form>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="fullName" placeholder="Họ và tên" required>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="phone" placeholder="Số điện thoại" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="address" placeholder="Địa chỉ" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" id="notes" placeholder="Ghi chú..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="d-flex " style="align-items: flex-start; flex-direction: column;">
+                        <div class="card-header">
+                            <h5>Vận chuyển</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shippingOption" id="deliveryOption" checked>
+                                <label class="form-check-label" for="deliveryOption">Giao hàng tận nơi</label>
+                                <span class="float-right">40.000₫</span>
+                            </div>
+                        </div>
+                        <div class="card-header">
+                            <h5>Thanh toán</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentOption" id="codOption" checked>
+                                <label class="form-check-label" for="codOption">Thanh toán khi giao hàng (COD) <i class="ml-2 fas fa-money-bill-wave"></i></label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentOption" id="momoOption">
+                                <label class="form-check-label" for="momoOption">Thanh toán ví momo <i class="ml-2 fas fa-money-bill-wave"></i></label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block">Đặt hàng</button>
+                        <a href="http://127.0.0.1:5500/Web/Home1.html" class="btn btn-success btn-block">Quay về giỏ hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
