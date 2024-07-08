@@ -23,12 +23,12 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam Long productId, @RequestParam int quantity) {
+    public String addToCart(@RequestParam String productId, @RequestParam int quantity) {
         cartService.addToCart(productId, quantity);
         return "redirect:/cart";
     }
     @GetMapping("/remove/{productId}")
-    public String removeFromCart(@PathVariable Long productId) {
+    public String removeFromCart(@PathVariable String productId) {
         cartService.removeFromCart(productId);
         return "redirect:/cart";
     }

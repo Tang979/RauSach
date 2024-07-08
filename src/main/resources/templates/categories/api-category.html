@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Category Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5">
+            <h2>Categories</h2>
+            <button onclick="loadCategories()" class="btn btn-primary mb-3">Refresh Categories</button>
+            <div class="mb-3 d-flex">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+                <button onclick="searchCategories()" class="btn btn-primary">Search</button>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryList"></tbody>
+            </table>
+            <!-- Form to add/update a category -->
+            <form id="categoryForm">
+                <input type="hidden" id="categoryId">
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="categoryName" required>
+                </div>
+                <button type="submit" class="btn btn-success">Save Category</button>
+            </form>
+        </div>
+        <script>
+            $(document).ready(function () {
+                loadCategories();
+                $("#categoryForm").on('submit', function (e) {
+                    e.preventDefault();
+                    saveCategory();
+                });
+            });
+
+            function loadCategories() {
+                $.ajax({
+                    url: '/api/categories',
+                    type: 'GET',
+                    success: function (categories) {
+                        let categoryList = '';
+                        $.each(categories, function (index, category) {
+                            categoryList += `<tr>
+                                <td>${category.id}</td>
+                                <td>${category.name}</td>
+                                <td>
+                                    <button onclick="editCategory(${category.id})" class="btn btn-warning">Edit</button>
+                                    <button onclick="deleteCategory(${category.id})" class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>`;
+                        });
+                        $('#categoryList').html(categoryList);
+                    }
+                });
+            }
+
+            function saveCategory() {
+                const categoryData = {
+                    id: $('#categoryId').val(),
+                    name: $('#categoryName').val()
+                };
+                const apiUrl = categoryData.id ? `/api/categories/${categoryData.id}` : '/api/categories';
+                const apiType = categoryData.id ? 'PUT' : 'POST';
+                $.ajax({
+                    url: apiUrl,
+                    type: apiType,
+                    contentType: 'application/json',
+                    data: JSON.stringify(categoryData),
+                    success: function () {
+                        resetCategoryForm();
+                        loadCategories();
+                    }
+                });
+            }
+
+            function editCategory(id) {
+                $.ajax({
+                    url: `/api/categories/${id}`,
+                    type: 'GET',
+                    success: function (category) {
+                        $('#categoryId').val(category.id);
+                        $('#categoryName').val(category.name);
+                    }
+                });
+            }
+
+            function deleteCategory(id) {
+                if (confirm('Are you sure you want to delete this category?')) {
+                    $.ajax({
+                        url: `/api/categories/${id}`,
+                        type: 'DELETE',
+                        success: function () {
+                            loadCategories();
+                        }
+                    });
+                }
+            }
+
+            function resetCategoryForm() {
+                $('#categoryId').val('');
+                $('#categoryName').val('');
+            }
+            function searchCategories() {
+                const searchValue = $('#searchInput').val().trim();
+                if (searchValue !== '') {
+                    $.ajax({
+                        url: `/api/categories/search?keyword=${searchValue}`,
+                        type: 'GET',
+                        success: function (categories) {
+                            let categoryList = '';
+                            $.each(categories, function (index, category) {
+                                categoryList += `<tr>
+                                    <td>${category.id}</td>
+                                    <td>${category.name}</td>
+                                    <td>
+                                        <button onclick="editProduct(${category.id})" class="btn btn-warning">Edit</button>
+                                        <button onclick="deleteProduct(${category.id})" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>`;
+                            });
+                            $('#categoryList').html(categoryList);
+                        }
+                    });
+                } else {
+                    loadCategories(); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
+                }
+            }
+        </script>
+    </section>
+</body>
+
+</html>

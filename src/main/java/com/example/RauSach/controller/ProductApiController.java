@@ -1,18 +1,14 @@
 package com.example.RauSach.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.RauSach.model.Product;
 import com.example.RauSach.service.ProductService;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -26,9 +22,43 @@ public class ProductApiController {
         return productService.getAllProduct();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductDetails(@PathVariable String id) {
-        Optional<Product> product = productService.getProductById(id);
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+        Product product = productService.getProductById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found on :: "
+                        + id));
+        return ResponseEntity.ok().body(product);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@RequestBody Product productDetails) {
+        Product product = productService.getProductById(productDetails.getId())
+                .orElseThrow(() -> new RuntimeException("Product not found on :: " + productDetails.getId()));
+        
+        product.setName(productDetails.getName());
+        product.setPrice(productDetails.getPrice());
+        product.setDescription(productDetails.getDescription());
+        // Assuming CategoryService can fetch Category by id or name
+        product.setCategory(productDetails.getCategory());
+        Product updatedProduct = productService.updateProduct(product);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        Product product = productService.getProductById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found on :: " + id));
+        productService.deleteProductById(id);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam String keyword) {
+        return productService.searchProducts(keyword);
+    }
+
 }

@@ -8,12 +8,15 @@ import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,9 @@ public class Role implements GrantedAuthority{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @NotBlank(message = "Name is required")
+    @Column(name = "name", length = 50, nullable = false)
+    @Size(max = 50, message = "Name must be less than 50 characters")
     private String name;
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     @ToString.Exclude

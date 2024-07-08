@@ -18,52 +18,22 @@
                     <img th:src="@{/images/} + ${product.imageURL}">
                     <h6 id="ProductName" th:text="${product.name}">Tên sản phẩm</h6>
                     <p th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + '₫'">Giá</p>
-                    <div class="buttons md-3">
+                    <div class="buttons">
                         <button class="btn view-product-btn" th:data-id="${product.id}">
-                            Chi tiết
+                            Mua
                         </button>
-                        <form th:action="@{/cart/add}" method="post">
-                            <div class="input-group">
-                                <input type="hidden" th:value="${product.id}" name="productId"/>
-                                <button type="submit" class="btn view-product-btn">Thêm</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        <nav aria-label="Page navigation example" th:if="${totalPages > 1}">
-            <ul class="pagination">
-                <li class="page-item" th:class="${listproduct.hasPrevious() ? '' :'disabled'}">
-                    <a class="page-link"
-
-                       th:href="@{/products?page=__${listproduct.number-1}__}" aria-label="Previous">
-
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item" th:each="page : ${#numbers.sequence(0,totalPages - 1)}"
-                    th:class="${listproduct.number == page ? 'active' : ''}">
-                    <a class="page-link "th:href="@{/products?page=__${page}__}"
-                       th:text="${page + 1}"></a></li>
-                <li class="page-item" th:class="${listproduct.hasNext() ? '' : 'disabled'}">
-                    <a class="page-link "
-                       th:href="@{/products?page=__${listproduct.number+1}__}" aria-label="Next">
-
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
         <div class="container mt-5">
             <!-- Modal -->
             <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header text-center">
-                            <h5 id="productName" >Tên sản phẩm</h5>
+                        <div class="modal-header">
+                            <h5 id="productName">Tên sản phẩm</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -74,13 +44,21 @@
                                     <img id="imgProduct" class="img-fluid product-image">
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="d-flex" >
-                                        <input type="number" style="max-width: 100px;" name="quantity" min="0.5" value="1" class="form-control text-center">
-                                        <span class="btn">Kg</span>
-                                    </div>
-                                    <h3 id="productPrice" class="text-danger mt-3"></h3>
-                                    <p id="productDescription"></p>
-                                    <button class="btn btn-success btn-lg mt-2">MUA NGAY</button>
+                                    <form th:action="@{/cart/add}" method="post">
+                                        <div class="mt-3">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm">-</button>
+                                            <input id="quantityProducts" name="quantity" type="number"
+                                                class="text-center" style="width: 50px;">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm">+</button>
+                                        </div>
+                                        <h3 id="productPrice" class="text-danger mt-3"><span
+                                                class="line-through text-secondary"></span></h3>
+                                        <p id="productDescription">Mô tả sản phẩm</p>
+                                        <input type="hidden" id="idProduct" name="productId"/>
+                                        <button type="submit" class="btn btn-success btn-lg mt-2">MUA
+                                            NGAY</button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
@@ -88,17 +66,30 @@
                 </div>
             </div>
         </div>
-
-
         <script>
             $(document).ready(function () {
                 $('.view-product-btn').on('click', function () {
                     var productId = $(this).data('id');
-                    console.log('Product ID: ', productId); // In ra ID sản phẩm để kiểm tra
                     editProduct(productId);
                 });
+                // Chức năng tăng giảm số lượng
+                $(document).on('click', '.btn-outline-secondary', function () {
+                    var input = $(this).siblings('#quantityProducts');
+                    var currentValue = parseInt(input.val());
+                    if ($(this).text() === '-') {
+                        if (currentValue > 1) {
+                            input.val(currentValue - 1);
+                        }
+                    } else if ($(this).text() === '+') {
+                        input.val(currentValue + 1);
+                    }
+                });
             });
-
+            function buyProduct() {
+                var productId = $('#idProduct').val();
+                var quantity = $('#quantityProducts').val();
+                addToCart(productId, quantity)
+            }
             function editProduct(id) {
                 $.ajax({
                     url: `/api/products/${id}`,
@@ -106,15 +97,33 @@
                     success: function (product) {
                         console.log(product);
                         // Cập nhật các trường dữ liệu của modal
+                        $('#idProduct').val(product.id);
                         $('#productName').text(product.name);
-                        $('#imgProduct').attr('src','/images/'+(product.imageURL));
-                        $('#productPrice').text(product.price + '₫/kg');
+                        $('#quantityProducts').val('1')
+                        $('#imgProduct').attr('src', '/images/' + (product.imageURL));
+                        $('#productPrice').text(product.price + '₫');
                         $('#productDescription').text(product.description);
                         // Hiển thị modal
                         $('#productModal').modal('show');
                     },
                     error: function (err) {
                         console.error('Lỗi khi lấy dữ liệu sản phẩm:', err);
+                    }
+                });
+            }
+            function addToCart(productId, quantity) {
+                $.ajax({
+                    url: '/cart/add',
+                    type: 'POST',
+                    data: {
+                        productId: productId,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        alert('Product added to cart successfully!');
+                    },
+                    error: function (err) {
+                        console.error('Error adding product to cart:', err);
                     }
                 });
             }
