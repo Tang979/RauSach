@@ -28,7 +28,7 @@ public class CartService {
         return cartItems;
     }
 
-    public void removeFromCart(Long productId) {
+    public void removeFromCart(String productId) {
         cartItems.removeIf(item -> item.getProduct().getId().equals(productId));
     }
 
