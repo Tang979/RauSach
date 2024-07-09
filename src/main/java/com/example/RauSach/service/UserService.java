@@ -1,7 +1,13 @@
 package com.example.RauSach.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.UUID;
 
+import com.example.RauSach.model.PasswordResetToken;
+import com.example.RauSach.repository.PasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +26,8 @@ import jakarta.validation.constraints.NotNull;
 @Service
 @Transactional
 public class UserService implements UserDetailsService{
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
     @Autowired
     private IUserRepository userRepository;
     @Autowired
@@ -68,5 +76,46 @@ public class UserService implements UserDetailsService{
     }
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken();
+        myToken.setToken(token);
+        myToken.setUser(user);
+        myToken.setExpiryDate(calculateExpiryDate(24 * 60));
+        tokenRepository.save(myToken);
+    }
+
+    private Date calculateExpiryDate(int expiryTimeInMinutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        return new Date(cal.getTime().getTime());
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        PasswordResetToken passToken = tokenRepository.findByToken(token);
+        if (passToken != null) {
+            User user = passToken.getUser();
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            tokenRepository.delete(passToken);
+        }
+    }
+    public boolean validatePasswordResetToken(String token) {
+        PasswordResetToken passToken = tokenRepository.findByToken(token);
+        return passToken != null && !isTokenExpired(passToken);
+    }
+
+    private boolean isTokenExpired(PasswordResetToken passToken) {
+        return passToken.getExpiryDate().before(new Date());
+    }
+
+    public String generateUniqueToken() {
+        String token;
+        do {
+            token = UUID.randomUUID().toString();
+        } while (tokenRepository.findByToken(token) != null);
+        return token;
     }
 }

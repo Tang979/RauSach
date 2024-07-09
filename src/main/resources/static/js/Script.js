@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
         forgotPasswordContainer.style.display = 'none';
         registerContainer.style.display = 'none';
     });
+/*--------------------------------------------*/
+
 });
 
 document.addEventListener('DOMContentLoaded', function() {
