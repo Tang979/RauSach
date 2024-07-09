@@ -14,9 +14,15 @@
 
 <body>
     <!-- Navigation -->
+<<<<<<< Updated upstream
     <nav class="navbar navbar-expand-lg navbar-light bg-color" style="color: white;">
         <a class="navbar-brand text-white" href="/products">
             <img    src="/images/logo9.png" alt="Logo">
+=======
+    <nav class="navbar navbar-expand-lg navbar-light bg-color">
+        <a class="navbar-brand text-white" href="http://localhost:8080">
+           <img th:src="../images/Logo.png" alt="">
+>>>>>>> Stashed changes
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +30,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav" >
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
+<<<<<<< Updated upstream
                 <li class="nav-item" >
                     <a class="nav-link" href="/products" style="color: white;">Trang chủ</a>
+=======
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080">Trang chủ</a>
+>>>>>>> Stashed changes
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="color: white;">Sản phẩm</a>
@@ -45,11 +56,19 @@
                 </li>
             </ul>
             <span class="navbar-text"></span>
+<<<<<<< Updated upstream
             <a class="nav-link " href="/cart" style="margin-left: 20px; margin-right: 25px;"><i
                     class="fa-solid fa-basket-shopping"></i></a>
 
             <div sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown"  style="display: inline;">
+=======
+            <a class="nav-link " href="/cart" style="margin-right: 25px;margin-left: 20px;"><i
+                    class="fa-solid fa-basket-shopping"></i></a>
+
+            <div sec:authorize="isAuthenticated()">
+                <li class="nav-item dropdown " style="display: inline;">
+>>>>>>> Stashed changes
                     <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Xin chào, <span sec:authentication="name"></span>
                     </a>
