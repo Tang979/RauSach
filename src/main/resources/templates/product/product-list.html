@@ -89,11 +89,11 @@
 
         <script>
             $(document).ready(function () {
-                //loadProducts();
-                // $('.view-product-btn').on('click', function () {
-                //     var productId = $(this).data('id');
-                //     editProduct(productId);
-                // });
+                loadProducts();
+                $('.view-product-btn').on('click', function () {
+                    var productId = $(this).data('id');
+                    editProduct(productId);
+                });
                 // Chức năng tăng giảm số lượng
                 $(document).on('click', '.btn-outline-secondary', function () {
                     var input = $(this).siblings('#quantityProducts');

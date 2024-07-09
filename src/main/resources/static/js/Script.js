@@ -43,7 +43,7 @@ function loadProducts() {
                             <div class="col-md-6" id="product">
                                 <img src="/images/${product.imageURL}">
                                 <h6 id="ProductName">${product.name}</h6>
-                                <p>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</p>
+                                <p>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND' }).format(product.price)}</p>
                                 <div class="buttons">
                                     <button class="btn view-product-btn" onclick="editProduct('${product.id}')">
                         Mua
