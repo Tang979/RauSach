@@ -20,8 +20,8 @@ public class Order {
     private String id;
     private LocalDate oderDate;
     private Long totalAmount;
+    private String customerName;
     public void setCustomerName(String customerName) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setCustomerName'");
+        this.customerName = customerName;
     }
 }
