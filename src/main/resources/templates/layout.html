@@ -15,19 +15,23 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-color" style="color: white;">
         <a class="navbar-brand text-white" href="/products">
-            <img    src="/images/logo9.png" alt="Logo">
+            <img src="/images/logo9.png" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav" >
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
-                <li class="nav-item" >
+                <li class="nav-item">
                     <a class="nav-link" href="/products" style="color: white;">Trang chủ</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="color: white;">Sản phẩm</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
+                    <div id="categoryId" class="dropdown-menu" aria-labelledby="dashboardDropdown">
+
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" id="dashboardDropdown"
@@ -48,8 +52,9 @@
                     class="fa-solid fa-basket-shopping"></i></a>
 
             <div sec:authorize="isAuthenticated()">
-                <li class="nav-item dropdown"  style="display: inline;">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown" style="display: inline;">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Xin chào, <span sec:authentication="name"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
@@ -64,7 +69,11 @@
             <div sec:authorize="!isAuthenticated()" style="display: inline;">
                 <a href="/login">
                     <button class="Btn">
-                        <div class="sign"><svg viewBox="0 0 512 512"><path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z"></path></svg></div>
+                        <div class="sign"><svg viewBox="0 0 512 512">
+                                <path
+                                    d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z">
+                                </path>
+                            </svg></div>
                         <div class="text">Login</div>
                     </button>
                 </a>
@@ -120,11 +129,10 @@
 
 
     <!-- Modal -->
-    <div id="adModal" class="modal">
+    <div id="adModal" class="modal-small">
         <div class="modal-content">
             <span class="close">&times;</span>
-
-            <img src="/static/images/logo9.png" height="213" width="398"/>
+            <img src="/images/logo9.png" height="213" width="398" />
         </div>
     </div>
 
@@ -133,7 +141,25 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-
+    <script>
+        $(document).ready(function () {
+            loadCategories()
+        });
+        function loadCategories() {
+            $.ajax({
+                url: '/api/categories',
+                type: 'GET',
+                success: function (categories) {
+                    let categoryOptions = '';
+                    $.each(categories, function (index, category) {
+                        categoryOptions += `<a class="dropdown-item" href="/admin/products/list">
+                            ${category.name}</a>`;
+                    });
+                    $('#categoryId').html(categoryOptions);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

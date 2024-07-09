@@ -44,7 +44,6 @@
                 <li class="page-item" th:class="${listproduct.hasNext() ? '' : 'disabled'}">
                     <a class="page-link "
                        th:href="@{/products?page=__${listproduct.number+1}__}" aria-label="Next">
-
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
