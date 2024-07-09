@@ -14,7 +14,7 @@
     <section layout:fragment="content">
         <div class="container body-content">
             <div class="row" id="products">
-                <div th:each="product : ${products}" class="col-md-6" id="product">
+                <!-- <div th:each="product : ${products}" class="col-md-6" id="product">
                     <img th:src="@{/images/} + ${product.imageURL}">
                     <h6 id="ProductName" th:text="${product.name}">Tên sản phẩm</h6>
                     <p th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + '₫'">Giá</p>
@@ -23,27 +23,24 @@
                             Mua
                         </button>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
         <nav aria-label="Page navigation example" th:if="${totalPages > 1}">
             <ul class="pagination">
                 <li class="page-item" th:class="${listproduct.hasPrevious() ? '' :'disabled'}">
-                    <a class="page-link"
-
-                       th:href="@{/products?page=__${listproduct.number-1}__}" aria-label="Previous">
+                    <a class="page-link" th:href="@{/products?page=__${listproduct.number-1}__}" aria-label="Previous">
 
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li class="page-item" th:each="page : ${#numbers.sequence(0,totalPages - 1)}"
                     th:class="${listproduct.number == page ? 'active' : ''}">
-                    <a class="page-link "th:href="@{/products?page=__${page}__}"
-                       th:text="${page + 1}"></a></li>
+                    <a class="page-link " th:href="@{/products?page=__${page}__}" th:text="${page + 1}"></a>
+                </li>
                 <li class="page-item" th:class="${listproduct.hasNext() ? '' : 'disabled'}">
-                    <a class="page-link "
-                       th:href="@{/products?page=__${listproduct.number+1}__}" aria-label="Next">
+                    <a class="page-link " th:href="@{/products?page=__${listproduct.number+1}__}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -77,11 +74,10 @@
                                         <h3 id="productPrice" class="text-danger mt-3"><span
                                                 class="line-through text-secondary"></span></h3>
                                         <p id="productDescription">Mô tả sản phẩm</p>
-                                        <input type="hidden" id="idProduct" name="productId"/>
+                                        <input type="hidden" id="idProduct" name="productId" />
                                         <button type="submit" class="btn btn-success btn-lg mt-2">MUA
                                             NGAY</button>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
@@ -93,10 +89,11 @@
 
         <script>
             $(document).ready(function () {
-                $('.view-product-btn').on('click', function () {
-                    var productId = $(this).data('id');
-                    editProduct(productId);
-                });
+                loadProducts();
+                // $('.view-product-btn').on('click', function () {
+                //     var productId = $(this).data('id');
+                //     editProduct(productId);
+                // });
                 // Chức năng tăng giảm số lượng
                 $(document).on('click', '.btn-outline-secondary', function () {
                     var input = $(this).siblings('#quantityProducts');
@@ -110,11 +107,47 @@
                     }
                 });
             });
+
             function buyProduct() {
                 var productId = $('#idProduct').val();
                 var quantity = $('#quantityProducts').val();
                 addToCart(productId, quantity)
             }
+
+            function searchProducts() {
+                const searchValue = $('#searchInputProduct').val().trim();
+                if (searchValue !== '') {
+                    $.ajax({
+                        url: `/api/products/search?keyword=${searchValue}`,
+                        type: 'GET',
+                        success: function (products) {
+                            var productContainer = $('#products');
+                            productContainer.empty();
+                            products.forEach(function (product) {
+                                var productHtml = `
+                            <div class="col-md-6" id="product">
+                                <img src="/images/${product.imageURL}">
+                                <h6 id="ProductName">${product.name}</h6>
+                                <p>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</p>
+                                <div class="buttons">
+                                    <button class="btn view-product-btn" onclick="editProduct('${product.id}')">
+                        Mua
+                    </button>
+                                </div>
+                            </div>
+                        `;
+                                productContainer.append(productHtml);
+                            });
+                        },
+                        error: function (err) {
+                            console.error('Error loading products:', err);
+                        }
+                    });
+                } else {
+                    loadProducts(); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
+                }
+            }
+
             function editProduct(id) {
                 $.ajax({
                     url: `/api/products/${id}`,

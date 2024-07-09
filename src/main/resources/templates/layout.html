@@ -8,6 +8,7 @@
     <title>All Green</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/Script.js"></script>
 </head>
 
 
@@ -21,6 +22,10 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="d-flex">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+            <button onclick="searchProducts()" class="btn btn-primary">Search</button>
+        </div>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
                 <li class="nav-item">
@@ -145,20 +150,6 @@
         $(document).ready(function () {
             loadCategories()
         });
-        function loadCategories() {
-            $.ajax({
-                url: '/api/categories',
-                type: 'GET',
-                success: function (categories) {
-                    let categoryOptions = '';
-                    $.each(categories, function (index, category) {
-                        categoryOptions += `<a class="dropdown-item" href="/admin/products/list">
-                            ${category.name}</a>`;
-                    });
-                    $('#categoryId').html(categoryOptions);
-                }
-            });
-        }
     </script>
 </body>
 
