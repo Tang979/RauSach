@@ -21,7 +21,14 @@ public class CartService {
     public void addToCart(String productId, int quantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
-        cartItems.add(new CartItem(product, quantity));
+        if (product != null) {
+            CartItem cartItem = cartItems.stream().filter(item -> item.getProduct().getId().equals(product.getId()))
+                    .findFirst().orElse(null);
+            if (cartItem != null) {
+                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            } else
+                cartItems.add(new CartItem(product, quantity));
+        }
     }
 
     public List<CartItem> getCartItems() {

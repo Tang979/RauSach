@@ -60,5 +60,8 @@ public class ProductApiController {
     public List<Product> searchProducts(@RequestParam String keyword) {
         return productService.searchProducts(keyword);
     }
-
+    @GetMapping("/category/{id}")
+    public List<Product> getProductsByCategory(@PathVariable String id){
+        return productService.getProductsByCategory(id);
+    }
 }
