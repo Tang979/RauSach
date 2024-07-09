@@ -9,12 +9,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.RauSach.model.Category;
 import com.example.RauSach.model.Product;
+import com.example.RauSach.repository.CategoryRepository;
 import com.example.RauSach.repository.ProductRepository;
 
 import jakarta.transaction.Transactional;
@@ -26,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class ProductService {
     private final ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public List<Product> getAllProduct() {
         return productRepository.findAll();
@@ -52,13 +57,18 @@ public class ProductService {
         existingProduct.setCategory(product.getCategory());
         return productRepository.save(existingProduct);
     }
-
     // Delete a product by its id
     public void deleteProductById(String id) {
         if (!productRepository.existsById(id)) {
             throw new IllegalStateException("Product with ID " + id + " does not exist.");
         }
         productRepository.deleteById(id);
+    }
+
+    public List<Product> getProductsByCategory(String categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalStateException("Category with ID " +
+        categoryId + " does not exist."));
+        return productRepository.findByCategory(category);
     }
 
     public void updateImage(Product newProduct, MultipartFile imageProduct) {
