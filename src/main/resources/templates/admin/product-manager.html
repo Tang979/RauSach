@@ -79,7 +79,7 @@
                                     <div class="mb-3 row">
                                         <label for="categoryId" class="form-label col-md-3">Loại sản phẩm:</label>
                                         <div class="col-md-9">
-                                            <select class="form-select" id="categoryId" required>
+                                            <select class="form-select" id="categoryList" required>
                                                 <!-- Populate options dynamically -->
                                             </select>
                                         </div>
@@ -100,8 +100,8 @@
         </div>
         <script>
             $(document).ready(function () {
-                loadProducts();
-
+                loadProductsManager();
+                loadCategoriesManager();
             });
             function searchProducts() {
                 const searchValue = $('#searchInputProduct').val().trim();
@@ -131,25 +131,26 @@
                         }
                     });
                 } else {
-                    loadProducts(); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
+                    loadProductsManager(); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
                 }
             }
-            function loadCategories() {
+            function loadCategoriesManager() {
                 $.ajax({
                     url: '/api/categories',
                     type: 'GET',
                     success: function (categories) {
+                        console.log(categories);
                         let categoryOptions = '';
                         $.each(categories, function (index, category) {
                             categoryOptions += `<option value="${category.id}">${category.name}</option>`;
                         });
-                        $('#categoryId').html(categoryOptions);
+                        $('#categoryList').append(categoryOptions);
                     }
                 });
             }
-            function loadProducts() {
+            function loadProductsManager() {
                 $.ajax({
-                    url: "/api/products",
+                    url: "/api/products/list",
                     method: 'GET',
                     success: function (products) {
                         let stt = 1;
@@ -179,13 +180,12 @@
                     type: 'GET',
                     success: function (product) {
                         console.log("Thành công");
-                        loadCategories();
                         $('#productId').val(product.id);
                         $('#imgProduct').attr('src', '/images/' + (product.imageURL));
                         $('#editProductName').val(product.name);
                         $('#editProductPrice').val(product.price);
                         $('#editProductDescription').val(product.description);
-                        $('#categoryId').val(product.category.id); // Đặt danh mục cho sản phẩm
+                        $('#categoryList').val(product.category.id); // Đặt danh mục cho sản phẩm
                         $('#editProductModal').modal('show');
                     }
                 });
@@ -196,7 +196,7 @@
                         url: `/api/products/${id}`,
                         type: 'DELETE',
                         success: function () {
-                            loadProducts();
+                            loadProductsManager();
                         }
                     });
                 }
@@ -215,7 +215,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify(productData),
                     success: function () {
-                        loadProducts();
+                        loadProductsManager();
                     }
                 });
             }

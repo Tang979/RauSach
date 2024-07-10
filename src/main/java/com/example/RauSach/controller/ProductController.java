@@ -34,11 +34,13 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
-/*    @GetMapping()
+    
+    @GetMapping()
     public String showProduct(Model model) {
         model.addAttribute("products", productService.getAllProduct());
         return "/product/product-list";
-    }*/
+    }
+
     @GetMapping("/add")
     public String showAddProducString(Model model) {
         model.addAttribute("product", new Product());
@@ -63,17 +65,6 @@ public class ProductController {
     @GetMapping("/{id}")
     public Optional<Product> getProduct(@PathVariable String id) {
         return productService.getProductById(id);
-    }
-
-    @GetMapping()
-    public String index(Model model,
-                        @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "5") int size) {
-        Page<Product> products = productService.GetAll(page, size);
-        model.addAttribute("products", products.getContent());
-        model.addAttribute("listproduct", products);
-        model.addAttribute("totalPages", products.getTotalPages());
-        return "/product/product-list";
     }
 }
 

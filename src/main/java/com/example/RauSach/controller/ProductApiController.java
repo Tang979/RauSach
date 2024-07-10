@@ -1,14 +1,17 @@
 package com.example.RauSach.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.RauSach.model.Product;
 import com.example.RauSach.service.ProductService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -17,9 +20,21 @@ public class ProductApiController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<Product> getAllProducts() {
         return productService.getAllProduct();
+    }
+
+    @GetMapping()
+    public ResponseEntity<Map<String, Object>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Page<Product> productPage = productService.getPage(page, size);
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", productPage.getContent());
+        response.put("currentPage", productPage.getNumber());
+        response.put("totalPages", productPage.getTotalPages());
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping
@@ -39,7 +54,6 @@ public class ProductApiController {
     public ResponseEntity<Product> updateProduct(@RequestBody Product productDetails) {
         Product product = productService.getProductById(productDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Product not found on :: " + productDetails.getId()));
-        
         product.setName(productDetails.getName());
         product.setPrice(productDetails.getPrice());
         product.setDescription(productDetails.getDescription());
@@ -60,8 +74,9 @@ public class ProductApiController {
     public List<Product> searchProducts(@RequestParam String keyword) {
         return productService.searchProducts(keyword);
     }
+
     @GetMapping("/category/{id}")
-    public List<Product> getProductsByCategory(@PathVariable String id){
-        return productService.getProductsByCategory(id);
+    public Page<Product> getProductsByCategory(@PathVariable String id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return productService.getProductsByCategory(id, PageRequest.of(page, size));
     }
 }

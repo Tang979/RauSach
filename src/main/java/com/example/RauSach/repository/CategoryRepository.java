@@ -10,5 +10,4 @@ import com.example.RauSach.model.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,String>{
     List<Category> findByNameContainingIgnoreCase(String keyword);
-
 }

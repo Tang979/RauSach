@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,10 +66,8 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> getProductsByCategory(String categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalStateException("Category with ID " +
-        categoryId + " does not exist."));
-        return productRepository.findByCategory(category);
+    public Page<Product> getProductsByCategory(String categoryId, Pageable pageable) {
+        return productRepository.findByCategoryId(categoryId, pageable);
     }
 
     public void updateImage(Product newProduct, MultipartFile imageProduct) {
@@ -95,5 +94,9 @@ public class ProductService {
     public Page<Product> GetAll(int pageNo, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
         return productRepository.findAll(pageRequest);
+    }
+    public Page<Product> getPage(int pageNo, int pageSize) {
+        Pageable products = PageRequest.of(pageNo,pageSize);
+        return productRepository.findAll(products);
     }
 }
