@@ -18,7 +18,7 @@ public class MoMoPaymentController {
 
     @GetMapping("/MoMoPayment")
     public String getMoMoPaymentPage() {
-        return "momo_payment"; // Đây là view cho trang thanh toán MoMo
+        return "momo/momo_payment"; // Đây là view cho trang thanh toán MoMo
     }
 
     @PostMapping("/MoMoPayment")
