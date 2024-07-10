@@ -21,10 +21,6 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="d-flex">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search...">
-            <button onclick="searchProducts()" class="btn btn-primary">Search</button>
-        </div>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
                 <li class="nav-item" >
@@ -53,15 +49,6 @@
             <span class="navbar-text"></span>
             <a class="nav-link " href="/cart" style="margin-left: 20px; margin-right: 25px;"><i
                     class="fa-solid fa-basket-shopping"></i></a>
-
-            <div sec:authorize="isAuthenticated()">
-                <li class="nav-item dropdown" style="display: inline;">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <li class="nav-item dropdown"  style="display: inline;">
-            <a class="nav-link " href="/cart" style="margin-right: 25px;margin-left: 20px;"><i
-                    class="fa-solid fa-basket-shopping"></i></a>
-
             <div sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown " style="display: inline;">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -145,12 +132,10 @@
             <img src="/images/logo9.png" height="213" width="398" />
         </div>
     </div>
-
 <!--    <script src="/js/scripts.js"></script>-->
     <script src="https://kit.fontawesome.com/d771e5aa2b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <script>
         $(document).ready(function () {
             loadCategories()
