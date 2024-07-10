@@ -1,19 +1,22 @@
-/*
+package com.example.RauSach.service;
+
 import com.google.gson.Gson;
 import okhttp3.*;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MoMoPayment {
+@Service
+public class MoMoPaymentService {
 
     private static final String ENDPOINT = "https://test-payment.momo.vn/v2/gateway/api/create";
     private static final String ACCESS_KEY = "klm05TvNBzhg7h7j";
     private static final String SECRET_KEY = "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa";
     private static final String PARTNER_CODE = "MOMOBKUN20180529";
 
-    public static void main(String[] args) throws IOException {
+    public String createPayment() throws IOException {
         OkHttpClient client = new OkHttpClient();
 
         // Tạo thông tin thanh toán
@@ -47,9 +50,7 @@ public class MoMoPayment {
             }
 
             // Xử lý phản hồi
-            String responseBody = response.body().string();
-            System.out.println(responseBody);
+            return response.body().string();
         }
     }
 }
-*/
