@@ -26,26 +26,10 @@
                 </div> -->
             </div>
         </div>
-
-        <nav aria-label="Page navigation example" th:if="${totalPages > 1}">
-            <ul class="pagination">
-                <li class="page-item" th:class="${listproduct.hasPrevious() ? '' :'disabled'}">
-                    <a class="page-link" th:href="@{/products?page=__${listproduct.number-1}__}" aria-label="Previous">
-
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item" th:each="page : ${#numbers.sequence(0,totalPages - 1)}"
-                    th:class="${listproduct.number == page ? 'active' : ''}">
-                    <a class="page-link " th:href="@{/products?page=__${page}__}" th:text="${page + 1}"></a>
-                </li>
-                <li class="page-item" th:class="${listproduct.hasNext() ? '' : 'disabled'}">
-                    <a class="page-link " th:href="@{/products?page=__${listproduct.number+1}__}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
+        <nav aria-label="Page navigation example" id="pagination">
+            <!-- Phân trang sẽ được thêm vào đây bằng JavaScript -->
         </nav>
+
         <div class="container mt-5">
             <!-- Modal -->
             <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
@@ -89,11 +73,16 @@
 
         <script>
             $(document).ready(function () {
-                loadProducts();
-                // $('.view-product-btn').on('click', function () {
-                //     var productId = $(this).data('id');
-                //     editProduct(productId);
-                // });
+                loadProducts(0);
+                $(document).on('click', '.page-link', function (event) {
+                    event.preventDefault();
+                    var page = $(this).data('page');
+                    loadProducts(page);
+                });
+                $('.view-product-btn').on('click', function () {
+                    var productId = $(this).data('id');
+                    editProduct(productId);
+                });
                 // Chức năng tăng giảm số lượng
                 $(document).on('click', '.btn-outline-secondary', function () {
                     var input = $(this).siblings('#quantityProducts');
@@ -107,7 +96,7 @@
                     }
                 });
             });
-
+            
             function buyProduct() {
                 var productId = $('#idProduct').val();
                 var quantity = $('#quantityProducts').val();
@@ -144,7 +133,7 @@
                         }
                     });
                 } else {
-                    loadProducts(); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
+                    loadProducts(0); // Nếu ô tìm kiếm trống, load lại danh sách sản phẩm đầy đủ
                 }
             }
 

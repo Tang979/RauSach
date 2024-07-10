@@ -11,8 +11,8 @@ import lombok.*;
 @Table(name = "order_details")
 public class OrderDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private int quantity;
 
