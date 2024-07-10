@@ -148,8 +148,67 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-5">
+                <div>
+                    <h5>Thông tin nhận hàng</h5>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="fullName" placeholder="Họ và tên" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="phone" placeholder="Số điện thoại"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="address" placeholder="Địa chỉ" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="notes" placeholder="Ghi chú..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex" style="align-items: flex-start; flex-direction: column;">
+                    <div class="card-header">
+                        <h5>Vận chuyển</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="shippingOption" id="deliveryOption"
+                                   checked>
+                            <label class="form-check-label" for="deliveryOption">Giao hàng tận nơi</label>
+                            <span class="float-right">40.000₫</span>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <h5>Thanh toán</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentOption" id="codOption"
+                                   checked>
+                            <label class="form-check-label" for="codOption">Thanh toán khi giao hàng (COD) <i
+                                    class="ml-2 fas fa-money-bill-wave"></i></label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentOption" id="momoOption">
+                            <label class="form-check-label" for="momoOption">Thanh toán ví momo <i
+                                    class="ml-2 fas fa-money-bill-wave"></i></label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary mb-5" onclick="handleCheckout()">Check Out</button>
+                    <a href="/products" class="btn btn-success btn-block">Quay về giỏ hàng</a>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 
 </html>
