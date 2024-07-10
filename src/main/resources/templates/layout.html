@@ -27,14 +27,13 @@
         </div>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto" style="font-size: 20px;">
-                <li class="nav-item">
+                <li class="nav-item" >
                     <a class="nav-link" href="/products" style="color: white;">Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
                     <div id="categoryId" class="dropdown-menu" aria-labelledby="dashboardDropdown">
-
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -59,6 +58,13 @@
                 <li class="nav-item dropdown" style="display: inline;">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown"  style="display: inline;">
+            <a class="nav-link " href="/cart" style="margin-right: 25px;margin-left: 20px;"><i
+                    class="fa-solid fa-basket-shopping"></i></a>
+
+            <div sec:authorize="isAuthenticated()">
+                <li class="nav-item dropdown " style="display: inline;">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Xin chào, <span sec:authentication="name"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">

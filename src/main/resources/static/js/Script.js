@@ -131,18 +131,31 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const cartItemsBody = document.getElementById('cartItemsBody');
     const totalPriceElement = document.getElementById('totalPrice');
+document.addEventListener('DOMContentLoaded', function() {
+    const cartItemsBody = document.getElementById('cartItemsBody');
+    const subtotalElement = document.getElementById('subtotal');
+    const shippingFeeElement = document.getElementById('shippingFee');
+    const finalTotalElement = document.getElementById('finalTotal');
 
     function calculateTotalPrice() {
-        let totalPrice = 0;
+        let totalPrice = 0; 
         const rows = cartItemsBody.getElementsByTagName('tr');
         for (let row of rows) {
-            const priceCell = row.cells[3]; // Assuming price is the 4th column
-            const quantityCell = row.cells[2]; // Assuming quantity is the 3rd column
+            const priceCell = row.cells[3];
+            const quantityCell = row.cells[2];
             const price = parseFloat(priceCell.textContent.replace(/[^\d.-]/g, ''));
             const quantity = parseInt(quantityCell.textContent);
             totalPrice += price * quantity;
         }
-        totalPriceElement.textContent = totalPrice.toLocaleString() + '₫';
+        subtotalElement.textContent = totalPrice.toLocaleString() + '₫';
+        return totalPrice;
+    }
+
+    function updateFinalTotal() {
+        const subtotal = parseFloat(subtotalElement.textContent.replace(/[^\d.-]/g, ''));
+        const shippingFee = parseFloat(shippingFeeElement.textContent.replace(/[^\d.-]/g, ''));
+        const finalTotal = subtotal + shippingFee;
+        finalTotalElement.textContent = finalTotal.toLocaleString() + '₫';
     }
 
     calculateTotalPrice();
@@ -185,3 +198,5 @@ function applyDiscount() {
         })
         .catch(error => console.error('Error:', error));
 }
+    updateFinalTotal();
+});

@@ -26,7 +26,7 @@ public class Product {
     private String name;
     @NotNull(message = "Không được để trống")
     @Min(1000)
-    private Long price;
+    private float price;
     private String imageURL;
     private String description;
     @ManyToOne
