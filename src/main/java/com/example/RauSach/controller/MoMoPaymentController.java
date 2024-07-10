@@ -4,26 +4,43 @@ import com.example.RauSach.service.MoMoPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/MoMoPayment")
 public class MoMoPaymentController {
 
     @Autowired
     private MoMoPaymentService moMoPaymentService;
 
-    @GetMapping
-    public String handlePayment() {
+    @GetMapping("/MoMoPayment")
+    public String getMoMoPaymentPage() {
+        return "momo_payment"; // Đây là view cho trang thanh toán MoMo
+    }
+
+    @PostMapping("/MoMoPayment")
+    public String handleMoMoPayment(RedirectAttributes redirectAttributes) {
         try {
             String response = moMoPaymentService.createPayment();
-            // Xử lý phản hồi của MoMo nếu cần thiết
-            return "redirect:" + response; // Chuyển hướng đến trang thanh toán của MoMo
+            // Xử lý phản hồi và chuyển hướng tới trang thanh toán MoMo
+            redirectAttributes.addFlashAttribute("paymentResponse", response);
+            return "redirect:/MoMoPaymentSuccess"; // Điều hướng tới trang thành công
         } catch (IOException e) {
             e.printStackTrace();
-            return "error"; // Trang lỗi nếu có vấn đề trong quá trình thanh toán
+            return "redirect:/MoMoPaymentError"; // Điều hướng tới trang lỗi
         }
+    }
+
+    @GetMapping("/MoMoPaymentSuccess")
+    public String getMoMoPaymentSuccessPage() {
+        return "momo_payment_success"; // View cho trang thành công
+    }
+
+    @GetMapping("/MoMoPaymentError")
+    public String getMoMoPaymentErrorPage() {
+        return "momo_payment_error"; // View cho trang lỗi
     }
 }
