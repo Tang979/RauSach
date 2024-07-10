@@ -1,11 +1,10 @@
 package com.example.RauSach.controller;
 
+import com.example.RauSach.model.PaymentResponse;
 import com.example.RauSach.service.MoMoPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -16,31 +15,27 @@ public class MoMoPaymentController {
     @Autowired
     private MoMoPaymentService moMoPaymentService;
 
-    @GetMapping("/MoMoPayment")
-    public String getMoMoPaymentPage() {
-        return "momo_payment"; // Đây là view cho trang thanh toán MoMo
-    }
-
-    @PostMapping("/MoMoPayment")
-    public String handleMoMoPayment(RedirectAttributes redirectAttributes) {
+    @GetMapping("/momo/payment")
+    public String initiateMoMoPayment(RedirectAttributes redirectAttributes) {
         try {
-            String response = moMoPaymentService.createPayment();
-            // Xử lý phản hồi và chuyển hướng tới trang thanh toán MoMo
-            redirectAttributes.addFlashAttribute("paymentResponse", response);
-            return "redirect:/MoMoPaymentSuccess"; // Điều hướng tới trang thành công
+            // Gọi service để lấy thông tin thanh toán từ MoMo
+            PaymentResponse paymentResponse = moMoPaymentService.createPayment();
+
+            // Kiểm tra và chuyển hướng nếu nhận được URL thanh toán từ MoMo
+            if (paymentResponse != null && paymentResponse.getQrCodeUrl() != null) {
+                // Chuyển hướng người dùng đến trang thanh toán MoMo
+                return "redirect:" + paymentResponse.getQrCodeUrl();
+            } else {
+                // Xử lý khi không nhận được URL thanh toán từ MoMo
+                // Ví dụ: Hiển thị thông báo lỗi
+                String errorMessage = paymentResponse != null ? paymentResponse.getErrorMessage() : "Không thể khởi tạo thanh toán với MoMo. Vui lòng thử lại sau.";
+                redirectAttributes.addFlashAttribute("error", errorMessage);
+                return "redirect:/cart"; // Chuyển hướng về trang giỏ hàng hoặc trang khác
+            }
         } catch (IOException e) {
-            e.printStackTrace();
-            return "redirect:/MoMoPaymentError"; // Điều hướng tới trang lỗi
+            // Xử lý ngoại lệ khi gọi service
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kết nối với MoMo. Vui lòng thử lại sau.");
+            return "redirect:/cart"; // Chuyển hướng về trang giỏ hàng hoặc trang khác
         }
-    }
-
-    @GetMapping("/MoMoPaymentSuccess")
-    public String getMoMoPaymentSuccessPage() {
-        return "momo_payment_success"; // View cho trang thành công
-    }
-
-    @GetMapping("/MoMoPaymentError")
-    public String getMoMoPaymentErrorPage() {
-        return "momo_payment_error"; // View cho trang lỗi
     }
 }

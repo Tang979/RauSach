@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Error Processing MoMo Payment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="container mt-5">
+        <div class="alert alert-danger text-center">
+            <h1>Error Processing MoMo Payment</h1>
+            <p>There was an error processing your MoMo payment request.</p>
+            <p>Please try again later or choose a different payment method.</p>
+        </div>
+        <div class="text-center">
+            <a href="/cart" class="btn btn-primary">Back to Cart</a>
+        </div>
+    </div>
+</section>
+</body>
+
+</html>
