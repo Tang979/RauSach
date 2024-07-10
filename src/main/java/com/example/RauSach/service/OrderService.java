@@ -6,7 +6,8 @@ import com.example.RauSach.model.OrderDetail;
 import com.example.RauSach.repository.OrderDetailRepository;
 import com.example.RauSach.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,28 +17,39 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private OrderDetailRepository orderDetailRepository;
-    @Autowired
-    private CartService cartService;  // Assuming you have a CartService
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    @Transactional
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final CartService cartService;  // Assuming you have a CartService
+
     public Order createOrder(String customerName, List<CartItem> cartItems) {
+        if (cartItems == null || cartItems.isEmpty()) {
+            throw new IllegalArgumentException("Cart items cannot be empty");
+        }
+
         Order order = new Order();
         order.setCustomerName(customerName);
-        order = orderRepository.save(order);
 
-        for (CartItem item : cartItems) {
-            OrderDetail detail = new OrderDetail();
-            detail.setOrder(order);
-            detail.setProduct(item.getProduct());
-            detail.setQuantity(item.getQuantity());
-            orderDetailRepository.save(detail);
+        try {
+            order = orderRepository.save(order);
+            for (CartItem item : cartItems) {
+                OrderDetail detail = new OrderDetail();
+                detail.setOrder(order);
+                detail.setProduct(item.getProduct());
+                detail.setQuantity(item.getQuantity());
+                orderDetailRepository.save(detail);
+            }
+
+            // Optionally clear the cart after order placement
+            cartService.clearCart();
+
+            logger.info("Order created successfully for customer: {}", customerName);
+
+        } catch (Exception e) {
+            logger.error("Error occurred while creating order for customer: {}", customerName, e);
+            throw e;
         }
-        // Optionally clear the cart after order placement
-        cartService.clearCart();
 
         return order;
     }
