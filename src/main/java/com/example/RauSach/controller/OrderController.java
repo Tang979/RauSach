@@ -26,6 +26,7 @@ public class OrderController {
     public String checkout() {
         return "/cart/checkout";
     }
+
     @PostMapping("/submit")
     public String submitOrder(String customerName) {
         List<CartItem> cartItems = cartService.getCartItems();
@@ -41,4 +42,7 @@ public class OrderController {
         model.addAttribute("message", "Your order has been successfully placed.");
         return "cart/order-confirmation";
     }
+
+
+
 }
