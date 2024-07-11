@@ -17,20 +17,26 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class OrderService {
+
+    
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final CartService cartService;  // Assuming you have a CartService
 
-    public Order createOrder(String customerName, List<CartItem> cartItems) {
+    public Order createOrder(String customerName, String customerEmail, String customerPhone, String customerAddress,String oroderStatus,Double total , List<CartItem> cartItems) {
         if (cartItems == null || cartItems.isEmpty()) {
             throw new IllegalArgumentException("Cart items cannot be empty");
         }
 
         Order order = new Order();
         order.setCustomerName(customerName);
-
+        order.setCustomerEmail(customerEmail);
+        order.setCustomerPhone(customerPhone);
+        order.setCustomerAddress(customerAddress);
+        order.setOderStatus(oroderStatus);
+        order.setTotal(total);
         try {
             order = orderRepository.save(order);
             for (CartItem item : cartItems) {
@@ -41,7 +47,7 @@ public class OrderService {
                 orderDetailRepository.save(detail);
             }
 
-            // Optionally clear the cart after order placement
+            // Clear the cart after order placement
             cartService.clearCart();
 
             logger.info("Order created successfully for customer: {}", customerName);

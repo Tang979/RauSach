@@ -2,47 +2,42 @@ package com.example.RauSach.controller;
 
 import com.example.RauSach.model.CartItem;
 import com.example.RauSach.model.Order;
-import com.example.RauSach.model.Product;
-import com.example.RauSach.service.CartService;
 import com.example.RauSach.service.OrderService;
-import org.springframework.ui.Model;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.RauSach.service.CartService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+
 @Controller
-@RequestMapping("/order")
 public class OrderController {
+
     @Autowired
     private OrderService orderService;
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/checkout")
-    public String checkout() {
-        return "/cart/checkout";
-    }
-
-    @PostMapping("/submit")
-    public String submitOrder(String customerName) {
-        List<CartItem> cartItems = cartService.getCartItems();
+    @PostMapping("/order/submit")
+    public String submitOrder(@RequestParam("customerName") String customerName,
+                              @RequestParam("customerEmail") String customerEmail,
+                              @RequestParam("customerPhone") String customerPhone,
+                              @RequestParam("customerAddress") String customerAddress,
+                              @RequestParam("oderStatus") String oderStatus,
+                              @RequestParam("total") Double total,
+                              Model model) {
+            List<CartItem> cartItems = cartService.getCartItems();
         if (cartItems.isEmpty()) {
             return "redirect:/cart"; // Redirect if cart is empty
         }
-        orderService.createOrder(customerName, cartItems);
-        return "redirect:/order/confirmation";
+            Order order = orderService.createOrder(customerName, customerEmail, customerPhone, customerAddress, oderStatus, total, cartItems);
+            model.addAttribute("order", order);
+            return "/cart/Order-Confirmation"; // Redirect to confirmation page or another appropriate view
+        
     }
-
-    @GetMapping("/confirmation")
-    public String orderConfirmation(Model model) {
-        model.addAttribute("message", "Your order has been successfully placed.");
-        return "cart/order-confirmation";
-    }
-
-
-
 }
