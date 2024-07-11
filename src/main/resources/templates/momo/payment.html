@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MoMo Payment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">MoMo Payment</h1>
+    
+    <div th:if="${paymentResponse != null}">
+        <div class="alert alert-info text-center">
+            <h2>Scan QR Code to Pay</h2>
+            <img th:src="@{'data:image/png;base64,' + ${paymentResponse.qrCodeUrl}}" alt="MoMo QR Code">
+            <span th:text="'Order ID: ' + ${paymentResponse.orderId}"></span>
+        </div>
+    </div>
+    
+    <div th:if="${paymentResponse == null}">
+        <div class="alert alert-danger text-center">
+            <h2>Payment Error</h2>
+            <p>There was an error processing your payment. Please try again.</p>
+        </div>
+    </div>
+    
+    <div class="text-center">
+        <a href="/cart" class="btn btn-primary">Back to Cart</a>
+    </div>
+</div>
+</body>
+</html>
